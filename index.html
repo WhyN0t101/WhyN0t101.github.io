@@ -1,24 +1,210 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
     <title>WhyNot Page</title>
+    <meta charset="UTF-8">
+    <meta name="author" content="WhyNot">
+    <meta name="description" content="personal {start,home}page of WhyNot, inspired by xero">
+    <meta name="keywords" content="start page, startpage, homepage, links">
+    <meta name="theme-color" content="#301934">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        @font-face {
+            font-family: hack;
+            src: url('custom_font.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        /* Base styles */
+        body {
+            background-color: #301934;
+            color: #c0c0c0;
+            font-family: hack, Arial, sans-serif;
+            margin: 1% 10%;
+            transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+        
+        article {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+        
+        section {
+            background: linear-gradient(to bottom, #241328 0%, #301934 90%);
+            flex: 1 0 20%;
+            padding: 20px;
+            text-align: left;
+            margin: 25px;
+        }
+        
+        h1 {
+            color: #c0c0c0;
+            font-weight: normal;
+            font-size: 18pt;
+            margin-bottom: 20px;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        li {
+            background-color: #301934;
+            margin: 2px;
+            padding: 2px;
+            transition: background-color 0.3s ease;
+        }
+        
+        li a {
+            color: #5F8787;
+            display: block;
+            text-decoration: none;
+            font-size: 15pt;
+            padding: 2px;
+            transition: color 0.3s ease;
+        }
+        
+        li a:hover,
+        li a:focus,
+        li:hover,
+        li:focus {
+            background-color: #241328;
+            color: #fff;
+        }
+        
+        input[type=text] {
+            background-color: #301934;
+            background-image: url('custom_font_1.png');
+            background-repeat: no-repeat;
+            background-position: center -7px;
+            color: #c0c0c0;
+            width: 99%;
+            height: 50px;
+            padding: 5px 0px 5px 15px;
+            font-size: 20pt;
+            border: none;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        /* Nord theme using CSS variables */
+        :root {
+            --nord-bg: #301934;
+            --nord-hover: #241328;
+        }
+        
+        .nord {
+            background-color: var(--nord-bg);
+        }
+        
+        .nord section {
+            background: linear-gradient(to bottom, var(--nord-hover) 0%, var(--nord-bg) 90%);
+        }
+        
+        .nord li {
+            background-color: var(--nord-bg);
+        }
+        
+        .nord li a:hover,
+        .nord li:hover,
+        .nord li:focus {
+            background-color: var(--nord-hover);
+        }
+    </style>
 </head>
-
 <body>
-    <div id = "tab">    
+    <!-- Rest of the HTML and JavaScript remains unchanged -->
+    <article>
+        <section id="search">
+            <form name="frmSearch">
+                <input type="text" id="find" name="q" list="bangs" autocomplete="off" autofocus>
+                <datalist id="bangs">
+                    <option value="!a">amazon product search</option>
+                    <option value="!bc">bandcamp search</option>
+                    <option value="!e">ebay search</option>
+                    <option value="!gh">github code search</option>
+                    <option value="!gn">greynoise query</option>
+                    <option value="!h">http status code docs</option>
+                    <option value="!i">google images search</option>
+                    <option value="!s">shodan snooping</option>
+                    <option value="!t">google translate</option>
+                    <option value="!w">wikipedia search</option>
+                    <option value="!y">youtube search</option>
+                    <option value="!yh">youtube history search</option>
+                </datalist>
+            </form>
+        </section>
+    </article>
+    <article id="main"></article>
+    <script type="text/javascript">
+        const linksData = [
+            {
+                id: "work",
+                links: [
+                    { label: "mail", url: "https://mail.google.com/mail/u/1/#inbox" },
+                ]
+            },
+            {
+                id: "social",
+                links: [
+					{ label: "instagram", url: "https://www.instagram.com/tiago_avp/" },
+					{ label: "twitter", url: "https://x.com/tiagoavp" },
+                    { label: "github", url: "https://github.com/WhyN0t101" },
+                    { label: "linkedin", url: "https://www.linkedin.com/in/tiago-pereira-4763ab252/" },
+                ]
+            }
+        ];
+        
+        const bangCommands = {
+            "!a ": "https://amazon.com/s?k=",
+            "!bc ": "https://bandcamp.com/search?q=",
+            "!e ": "https://ebay.com/sch/i.html?_nkw=",
+            "!gh ": "https://github.com/search?type=code&q=",
+            "!gn ": "https://viz.greynoise.io/query/",
+            "!h ": "https://webfx.com/web-development/glossary/http-status-codes/what-is-a-",
+            "!i ": "https://google.com/search?tbm=isch&q=",
+            "!s ": "https://shodan.io/search?query=",
+            "!t ": "https://translate.google.com/#auto/en/",
+            "!w ": "https://en.wikipedia.org/w/index.php?search=",
+            "!y ": "https://youtube.com/results?search_query=",
+            "!yh ": "https://youtube.com/feed/history?query="
+        };
 
-    </div>
+        function search() {
+            const find = document.getElementById("find").value.trim();
+            const bang = find.split(" ")[0];
+            const query = find.replace(bang, "").trim();
 
-    <script src="https://unpkg.com/vue@next"></script>
+            if (bangCommands[bang]) {
+                window.location = `${bangCommands[bang]}${encodeURIComponent(query)}`;
+            } else {
+                window.location = `https://google.com/search?q=${encodeURIComponent(find)}`;
+            }
+        }
+
+        function buildLinks(data) {
+            const main = document.getElementById("main");
+            main.innerHTML = data.map(group => `
+                <section>
+                    <h1>${group.id}</h1>
+                    <ul>${group.links.map(link => `
+                        <li><a href="${link.url}" tabindex="0">${link.label}</a></li>
+                    `).join('')}</ul>
+                </section>
+            `).join('');
+        }
+
+        document.getElementById("find").addEventListener("keydown", event => {
+            if (event.key === "Enter") {
+                search();
+                event.preventDefault();
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => buildLinks(linksData));
+    </script>
 </body>
-
 </html>
